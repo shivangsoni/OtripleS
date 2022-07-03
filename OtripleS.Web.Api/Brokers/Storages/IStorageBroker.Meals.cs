@@ -12,5 +12,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         ValueTask<Meal> InsertMealAsync(Meal meal);
 
         ValueTask<Meal> UpdateMealAsync(Meal meal);
+
+        ValueTask<Meal> DeleteMealAsync(Meal meal);
     }
 }
