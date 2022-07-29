@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Meals;
@@ -25,6 +26,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Meals
         }
 
         public IQueryable<Meal> RetrieveAllMeals() =>
-            throw new NotImplementedException();
+            this.storageBroker.SelectAllMeals();
     }
 }
