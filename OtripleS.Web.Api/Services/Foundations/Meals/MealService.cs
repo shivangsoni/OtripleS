@@ -6,9 +6,11 @@
 using System;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Meals;
+using OtripleS.Web.Api.Models.Meals.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Meals
 {
@@ -25,7 +27,20 @@ namespace OtripleS.Web.Api.Services.Foundations.Meals
             this.loggingBroker = loggingBroker;
         }
 
-        public IQueryable<Meal> RetrieveAllMeals() =>
-            this.storageBroker.SelectAllMeals();
+        public IQueryable<Meal> RetrieveAllMeals()
+        {
+            try
+            {
+                return this.storageBroker.SelectAllMeals();
+            }
+            catch(SqlException sqlException)
+            {
+                var failedMealStorageException = new FailedMealStorageException(sqlException);
+                var mealDependencyException = new MealDependencyException(failedMealStorageException);
+                this.loggingBroker.LogCritical(mealDependencyException);
+                throw mealDependencyException;
+            }
+        }
+            
     }
 }
