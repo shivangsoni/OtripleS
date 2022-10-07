@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Attachment> InsertAttachmentAsync(Attachment attachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Attachment> attachmentEntityEntry = await broker.Attachments.AddAsync(entity: attachment);
             await broker.SaveChangesAsync();
 
@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Attachment> SelectAttachmentByIdAsync(Guid attachmentId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await Attachments.FindAsync(attachmentId);
@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Attachment> UpdateAttachmentAsync(Attachment attachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Update(entity: attachment);
             await broker.SaveChangesAsync();
 
@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Attachment> DeleteAttachmentAsync(Attachment attachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Remove(entity: attachment);
             await broker.SaveChangesAsync();
 
