@@ -14,7 +14,7 @@ using OtripleS.Web.Api.Models.Meals.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Meals
 {
-    public class MealService : IMealService
+    public partial class MealService : IMealService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -27,20 +27,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Meals
             this.loggingBroker = loggingBroker;
         }
 
-        public IQueryable<Meal> RetrieveAllMeals()
-        {
-            try
-            {
-                return this.storageBroker.SelectAllMeals();
-            }
-            catch(SqlException sqlException)
-            {
-                var failedMealStorageException = new FailedMealStorageException(sqlException);
-                var mealDependencyException = new MealDependencyException(failedMealStorageException);
-                this.loggingBroker.LogCritical(mealDependencyException);
-                throw mealDependencyException;
-            }
-        }
-            
+        public IQueryable<Meal> RetrieveAllMeals() =>
+        TryCatch(() => this.storageBroker.SelectAllMeals());
     }
 }
